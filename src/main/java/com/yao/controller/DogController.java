@@ -1,9 +1,12 @@
 package com.yao.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.yao.model.Dog;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +14,12 @@ import java.util.List;
 /**
  * Created by root on 15-4-3.
  */
-@Controller
+@RestController
 @RequestMapping("/dog")
 public class DogController {
     @RequestMapping("/dogs")
-    public String dogs(Model model){
+    @ResponseBody
+    private List<Dog> dogs(){
         Dog dog1=new Dog(){
             {
                 setName("dog1");
@@ -31,7 +35,16 @@ public class DogController {
         List<Dog>result=new ArrayList<Dog>();
         result.add(dog1);
         result.add(dog2);
-        model.addAttribute("dogList",result);
-        return "dogList";
+        return result;
+    }
+    @RequestMapping(value="/yellow", method= RequestMethod.GET)
+    public @ResponseBody Dog yellow(){
+        Dog dog=new Dog(){
+            {
+                setName("dog1");
+                setColor("yellow");
+            }
+        };
+        return dog;
     }
 }
